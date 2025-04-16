@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">DevicesResources</string>
+    <string name="tvVersionAndroidLB">1. Version Android:</string>
+    <string name="tvVersionAndroid"></string>
+    <string name="tvLigth">2. Flashlight :</string>
+    <string name="btnOn">On</string>
+    <string name="btnOff">Off</string>
+    <string name="tvLevelBaterry">3. Level of Baterry</string>
+    <string name="tvLevelBaterry_2"></string>
+    <string name="tvStorage">4. Storage</string>
+    <string name="etNameFile">Name of File</string>
+    <string name="btnSaveFile">Save</string>
+    <string name="tvState">5. Conection:</string>
+</resources>
