@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.hardware.camera2.CameraManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,13 +14,11 @@ import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -67,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_PERMISSION_BT = 2;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_CAMERA_PERMISSION = 100;
-    private ImageView ivPhoto;
     private Button btnTakePhoto;
 
 
@@ -80,15 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         initObjects();
 
-        // Inicia componentes para la foto
-        ivPhoto = findViewById(R.id.ivPhoto);
-        btnTakePhoto = findViewById(R.id.btnTakePhoto);
-
         btnTakePhoto.setOnClickListener(v -> {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
+            // Abre la actividad de la cámara
+            Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+            startActivity(intent);
         });
 
         // Linterna
@@ -158,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSION_BT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                enableBluetooth(); // vuelve a intentar habilitar
+                enableBluetooth();
             } else {
                 Toast.makeText(this, "Permiso de Bluetooth denegado", Toast.LENGTH_SHORT).show();
             }
@@ -284,6 +273,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Version de android
+        String versionSO= Build.VERSION.RELEASE;
+        versionSDK=Build.VERSION.SDK_INT;
+        versionAndroid.setText("Versión SO:"+versionSO+" / SDK:"+versionSDK);
+        checkConnection();
+    }
     private void initObjects() {
         this.context = this;
         this.activity = this;
@@ -300,5 +298,6 @@ public class MainActivity extends AppCompatActivity {
         this.btnDisableBluetooth = findViewById(R.id.btnDisableBluetooth);
         this.btnListDevices = findViewById(R.id.btnListDevices);
         this.btnSaveFile = findViewById(R.id.btnSaveFile);
+        this.btnTakePhoto = findViewById(R.id.btnTakePhoto);
     }
 }
